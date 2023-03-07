@@ -6,6 +6,10 @@ import {
   setName,
   setEmail,
   setAddress,
+  setdistrict,
+  setCountry,
+  setPincode,
+  // ////
   setPhone,
   setTenthPercentage,
   setTwelfthPercentage,
@@ -15,7 +19,44 @@ import {
   setRelevantExperience,
 } from "../Redux/features/formSlice";
 import Accordion from "react-bootstrap/Accordion";
-
+const Citys = [
+  "Ariyalur",
+  "Chengalpattu",
+  "Chennai",
+  "Coimbatore",
+  "Cuddalore",
+  "Dharmapuri",
+  "Dindigul",
+  "Erode",
+  "Kallakurichi",
+  "Kanchipuram",
+  "Kanyakumari",
+  "Karur",
+  "Krishnagiri",
+  "Madurai",
+  "Nagapattinam",
+  "Namakkal",
+  "Nilgiris",
+  "Perambalur",
+  "Pudukkottai",
+  "Ramanathapuram",
+  "Ranipet",
+  "Salem",
+  "Sivaganga",
+  "Tenkasi",
+  "Thanjavur",
+  "Theni",
+  "Thiruvallur",
+  "Thiruvarur",
+  "Tiruchirappalli",
+  "Tirunelveli",
+  "Tirupathur",
+  "Tiruppur",
+  "Tiruvannamalai",
+  "Vellore",
+  "Viluppuram",
+  "Virudhunagar",
+];
 const NestedForm = () => {
   const [formData, setFormData] = useState({});
   const [completed12th, setCompleted12th] = useState(true);
@@ -25,6 +66,10 @@ const NestedForm = () => {
   const [name1, setName1] = useState();
   const [email1, setEmail1] = useState();
   const [address1, setAddress1] = useState();
+  const [district1, setdistrict1] = useState();
+  const [country1, setCountry1] = useState();
+  const [pincode1, setPincode1] = useState();
+
   const [phone1, setPhone1] = useState();
   const [tenthPercentage1, setTenthPercentage1] = useState();
   const [twelfthPercentage1, setTwelfthPercentage1] = useState();
@@ -35,13 +80,11 @@ const NestedForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
- 
-   
 
     ///////////section-1 data
-    
+
     const errors = {};
-   let isValid = true;
+    let isValid = true;
     const namePattern = /^[a-zA-Z\s'-]{2,50}$/;
     if (!formData.name) {
       errors.name = "Please enter your name";
@@ -65,6 +108,23 @@ const NestedForm = () => {
       errors.address = "Please enter your address";
       isValid = false;
     }
+
+    // Country Address=2
+    if (!formData.country) {
+      errors.country = "Please enter your Address";
+      isValid = false;
+    }
+    // distric city
+    if (!formData.district) {
+      errors.district = "Please enter your City";
+      isValid = false;
+    }
+    //Pincode
+    if (!formData.pincode) {
+      errors.pincode = "Please enter your Pincode";
+      isValid = false;
+    }
+
     // Phone
     const phonePattern = /^\d{3}[-\s]?\d{3}[-\s]?\d{4}$/;
     if (!formData.phone) {
@@ -138,19 +198,23 @@ const NestedForm = () => {
 
     setFormErrors(errors);
 
-       // section-2 data
-       if (isValid){
-        setName1(name);
-     setEmail1(email);
-     setAddress1(address);
-     setPhone1(phone);
-     setTenthPercentage1(tenthPercentage); 
-     setTwelfthPercentage1(twelfthPercentage);
-     setDiplomaPercentage1(diplomaPercentage);
-     setUgCGPA1(ugCGPA);
-     setCompany1(company);
-     setRelevantExperience1(relevantExperience);
-     }
+    // section-2 data
+    if (isValid) {
+      setName1(name);
+      setEmail1(email);
+      setAddress1(address);
+      setdistrict1(district);
+      setCountry1(country);
+      setPincode1(pincode);
+
+      setPhone1(phone);
+      setTenthPercentage1(tenthPercentage);
+      setTwelfthPercentage1(twelfthPercentage);
+      setDiplomaPercentage1(diplomaPercentage);
+      setUgCGPA1(ugCGPA);
+      setCompany1(company);
+      setRelevantExperience1(relevantExperience);
+    }
 
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
@@ -161,6 +225,10 @@ const NestedForm = () => {
     dispatch(setName(formData.name));
     dispatch(setEmail(formData.email));
     dispatch(setAddress(formData.address));
+    dispatch(setdistrict(formData.district));
+    dispatch(setCountry(formData.country));
+    dispatch(setPincode(formData.pincode));
+
     dispatch(setPhone(formData.phone));
     dispatch(setTenthPercentage(formData.tenthPercentage));
 
@@ -178,6 +246,10 @@ const NestedForm = () => {
     name = "",
     email = "",
     address = "",
+    district = "",
+    country = "",
+    pincode = "",
+    // ///
     phone = "",
     tenthPercentage = "",
     twelfthPercentage = "",
@@ -205,10 +277,7 @@ const NestedForm = () => {
         <hr />
         <div className="sections">
           <section>
-            <Form
-              onSubmit={handleSubmit}
-              onReset={handleReset}
-            >
+            <Form onSubmit={handleSubmit} onReset={handleReset}>
               {/* name */}
               <Form.Group controlId="formName">
                 <Form.Label>Name</Form.Label>
@@ -239,16 +308,32 @@ const NestedForm = () => {
                   {formErrors.email}
                 </Form.Control.Feedback>
               </Form.Group>
+              {/* Phone Number */}
+              <Form.Group controlId="formPhone">
+                <Form.Label>Phone number</Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Enter phone number"
+                  name="phone"
+                  value={phone}
+                  pattern="[0-9]{10}"
+                  onChange={handleInputChange}
+                  isInvalid={!!formErrors.phone}
+                />
+                <Form.Control.Feedback type="invalid">
+                  +{formErrors.phone}
+                </Form.Control.Feedback>
+              </Form.Group>
               {/* ////////////////////// Accordian--1 //////////////////////// */}
               <Accordion className="mt-4">
                 <Accordion.Item eventKey="0">
                   <Accordion.Header>
-                    Contect Details<spann style={{ color: "red" }}>*</spann>
+                    Address Details<spann style={{ color: "red" }}>*</spann>
                   </Accordion.Header>
                   <Accordion.Body>
                     {/* Address */}
                     <Form.Group controlId="formAddress">
-                      <Form.Label>Address</Form.Label>
+                      <Form.Label> Address Line 1</Form.Label>
                       <Form.Control
                         type="text"
                         placeholder="Enter address"
@@ -261,20 +346,57 @@ const NestedForm = () => {
                         {formErrors.address}
                       </Form.Control.Feedback>
                     </Form.Group>
-                    {/* Phone Number */}
-                    <Form.Group controlId="formPhone">
-                      <Form.Label>Phone number</Form.Label>
+                    {/* country*/}
+                    <Form.Group controlId="formCounty">
+                      <Form.Label>Address Line 2</Form.Label>
                       <Form.Control
-                        type="number"
-                        placeholder="Enter phone number"
-                        name="phone"
-                        value={phone}
-                        pattern="[0-9]{10}"
+                        type="text"
+                        placeholder="Enter Address"
+                        name="country"
+                        value={country}
                         onChange={handleInputChange}
-                        isInvalid={!!formErrors.phone}
+                        isInvalid={!!formErrors.country}
                       />
-                      <Form.Control.Feedback type="invalid">+
-                        {formErrors.phone}
+                      <Form.Control.Feedback type="invalid">
+                        {formErrors.country}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                    {/* District = city*/}
+                    <Form.Group controlId="formdistrict">
+                      <Form.Label>City</Form.Label>
+                      <Form.Control
+                        as="select"
+                        className="form-select"
+                        name="district"
+                        value={district}
+                        onChange={handleInputChange}
+                        isInvalid={!!formErrors.district}
+                      >
+                        <option value="">--Select City--</option>
+                        {Citys.map((city) => (
+                          <option key={city} value={city}>
+                            {city}
+                          </option>
+                        ))}
+                      </Form.Control>
+                      <Form.Control.Feedback type="invalid">
+                        {formErrors.district}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+
+                    {/* pincode*/}
+                    <Form.Group controlId="formPincode">
+                      <Form.Label>Pin-Code</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter Pin-Code"
+                        name="pincode"
+                        value={pincode}
+                        onChange={handleInputChange}
+                        isInvalid={!!formErrors.pincode}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {formErrors.pincode}
                       </Form.Control.Feedback>
                     </Form.Group>
                   </Accordion.Body>
@@ -434,14 +556,26 @@ const NestedForm = () => {
                       ABCD
                     </Card.Subtitle>
                     <Card.Text>
-                      Name: <strong>{name}</strong>
+                      Name: <strong>{name1}</strong>
                     </Card.Text>
                     <Card.Text>
                       Email: <strong>{email1}</strong>
                     </Card.Text>
+
                     <Card.Text>
-                      Address: <strong>{address1}</strong>
+                      Address Line 1: <italic>{address1}</italic>
                     </Card.Text>
+                    <Card.Text>
+                      Address Line 2: <italic>{country1}</italic>
+                    </Card.Text>
+                    <Card.Text>
+                      City: <italic>{district1}</italic>
+                    </Card.Text>
+
+                    <Card.Text>
+                      Pin-Code: <italic>{pincode1}</italic>
+                    </Card.Text>
+
                     <Card.Text>
                       Phone: <strong>{phone1}</strong>
                     </Card.Text>
@@ -454,7 +588,6 @@ const NestedForm = () => {
                       </Card.Text>
                     ) : (
                       <Card.Text>
-
                         Diploma Percentage:{" "}
                         <strong>{diplomaPercentage1}</strong>
                       </Card.Text>

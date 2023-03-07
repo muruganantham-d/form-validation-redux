@@ -4,6 +4,10 @@ const initialState = {
   name: "",
   email: "",
   address: "",
+  district: "",
+  country: "",
+  pincode:"",
+
   phone: "",
   tenthPercentage: "",
   completed12th: true,
@@ -27,6 +31,17 @@ export const formSlice = createSlice({
     setAddress: (state, action) => {
       state.address = action.payload;
     },
+    ////new
+    setdistrict:(state, action) => {
+      state.district = action.payload
+    },
+    setCountry:(state, action) => {
+      state.country = action.payload
+    },
+    setPincode:(state, action) => {
+      state.pincode = action.payload
+    },
+    // /////
     setPhone: (state, action) => {
       state.phone = action.payload;
     },
@@ -55,6 +70,10 @@ export const formSlice = createSlice({
       state.name = "";
       state.email = "";
       state.address = "";
+      state.district = "";
+      state.country = "";
+      state.pincode = "";
+      /////
       state.phone = "";
       state.tenthPercentage = "";
       state.completed12th = true;
@@ -71,6 +90,9 @@ export const {
   setName,
   setEmail,
   setAddress,
+  setdistrict,
+  setCountry,
+  setPincode,
   setPhone,
   setTenthPercentage,
   setCompleted12th,
